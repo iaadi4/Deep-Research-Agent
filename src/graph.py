@@ -22,3 +22,4 @@ graph.add_conditional_edges(
 )
 
 research_agent = graph.compile()
+research_agent.invoke({"messages": []})
