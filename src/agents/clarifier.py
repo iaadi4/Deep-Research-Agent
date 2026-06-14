@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from state import AgentState
 from langchain_google_genai import ChatGoogleGenerativeAI
 from prompts.clarifier import clarifier_prompt
+from tools.tavily_search import search_tool
+import datetime
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
@@ -15,8 +17,18 @@ clarifier_llm = clarifier_prompt | llm.with_structured_output(ClarifierOutput)
 
 def clarifier_agent(state: AgentState) -> dict:
     """This node clarifies the scope of research regarding user queries"""
+
+    last_user_message = state["user_queries"][-1].content if state["user_queries"] else ""
+    try:
+        search_context = search_tool.invoke(f"recent updates or timeline {last_user_message}")
+    except Exception as e:
+        search_context = "No recent search data found"
+
+    current_time_str = datetime.datetime.now().strftime("%A, %B %d, %Y")
+
     result = clarifier_llm.invoke({
-        "conversation_history": state["user_queries"]
+        "current_date": current_time_str,
+        "conversation_history": state["user_queries"] + [AIMessage(content=f"[System Grounding Context for Clarifier]: Recent web data shows: {search_context}")]
     })
     
     state_update = {

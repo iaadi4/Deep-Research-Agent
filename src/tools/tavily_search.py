@@ -10,11 +10,11 @@ class SearchInput(BaseModel):
     query: str = Field(description="Search query")
 
 @tool(args_schema=SearchInput)
-def search_tool(query: str) -> str:
-    """Searches the web and return top 5 results"""
+def search_tool(query: str, max_results: int = 5) -> str:
+    """Searches the web and return top results"""
 
     try:
-        result = tavily_client.search(query, max_results=5)
+        result = tavily_client.search(query, max_results)
     except Exception as e:
         return f"Failed to use search the web with query {query}, with error {e}"
 
