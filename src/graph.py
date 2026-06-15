@@ -3,8 +3,8 @@ load_dotenv()
 
 from langgraph.graph import StateGraph, END
 from state import AgentState 
-from agents.clarifier import clarifier_agent, user_input_node, should_move_to_planner
-from agents.planner import planner_agent
+from agents.clarifier.agents import clarifier_agent, user_input_node, should_move_to_planner
+from agents.planner.agents import planner_agent
 
 graph = StateGraph(AgentState)
 graph.add_node("user_input_node", user_input_node)
