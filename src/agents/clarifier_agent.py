@@ -3,8 +3,8 @@ from pydantic import Field
 from pydantic import BaseModel
 from state import AgentState
 from langchain_google_genai import ChatGoogleGenerativeAI
-from prompts.clarifier import clarifier_prompt
-from tools.tavily_search import search_tool
+from prompts.clarifier_prompt import clarifier_prompt
+from tools.tavily_search_tool import search_tool
 import datetime
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
@@ -49,8 +49,8 @@ def should_move_to_planner(state: AgentState) -> str:
     else:
         return "loop"
 
-def user_input_node(state: AgentState) -> AgentState:
+def user_input_node(state: AgentState) -> dict:
     """This node takes user input for research"""
     query = input("Enter: ")
-    return { "user_queries": [HumanMessage(content=query)] }
+    return {"user_queries": [HumanMessage(content=query)]}
     
