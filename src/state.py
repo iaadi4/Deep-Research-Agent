@@ -18,7 +18,8 @@ class AgentState(TypedDict):
     clarified_query: str
 
     # Research plan from Planner agent
-    research_plan: list[str]
+    research_brief: str
+    research_tasks: list[dict]
 
     # Data from multiple Research agent
     raw_research_data: Annotated[list[ResearchItem], operator.add]
