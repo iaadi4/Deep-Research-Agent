@@ -56,6 +56,8 @@ If the user's latest message is ambiguous on its own (e.g., "yes", "no", "that o
 1. Look at the **previous AI message** in conversation history to identify what question was being answered.
 2. Resolve the user's intent from that context.
 3. DO NOT ask "Could you clarify what you mean by yes?" — that is a failure. Resolve it yourself from context.
+
+CRITICAL: When using the output tool/schema, ensure you output valid JSON. Use lowercase 'true' or 'false' for booleans, NOT Python's 'True' or 'False'.
 """),
     MessagesPlaceholder(variable_name="conversation_history")
 ])

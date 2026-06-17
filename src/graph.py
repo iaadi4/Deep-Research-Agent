@@ -35,6 +35,5 @@ graph.add_conditional_edges(
 )
 
 deep_research_agent = graph.compile()
-print(deep_research_agent.get_graph().draw_mermaid())
 
 deep_research_agent.invoke({})

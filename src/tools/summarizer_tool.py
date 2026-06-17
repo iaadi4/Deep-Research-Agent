@@ -1,11 +1,11 @@
 from langchain_core.tools import tool
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
+from llm import get_llm
 
-MAX_CHARS = 150000 
+MAX_CHARS = 100000 
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
+llm = get_llm(temperature=0.3)
 
 prompt = ChatPromptTemplate.from_messages([
     SystemMessage(content="You are an information compression assistant. The provided text is an output "

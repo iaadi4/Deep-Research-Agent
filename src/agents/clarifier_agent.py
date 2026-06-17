@@ -2,13 +2,14 @@ from langchain_core.messages import AIMessage, HumanMessage
 from pydantic import Field
 from pydantic import BaseModel
 from state import AgentState
-from langchain_google_genai import ChatGoogleGenerativeAI
+from llm import get_llm
 from prompts.clarifier_prompt import clarifier_prompt
 from tools.tavily_search_tool import search_tool
 import datetime
 
-search_query_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash-lite")
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+
+search_query_llm = get_llm(temperature=0.0)
+llm = get_llm(temperature=0.7)
 
 class ClarifierOutput(BaseModel):
     is_query_clear: bool = Field(

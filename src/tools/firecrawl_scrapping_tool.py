@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from firecrawl import Firecrawl
 from langchain_core.tools import tool
 
-MAX_CHARS = 15000  # max chars returned to agent after scraping website content
+MAX_CHARS = 4000  # max chars returned to agent after scraping website content
 
 firecrawl_api_key = os.getenv("FIRECRAWL_API_KEY")
 firecrawl_client = Firecrawl(api_key=firecrawl_api_key)
@@ -20,6 +20,7 @@ def scrape_tool(url: str) -> dict:
     try:
         result = firecrawl_client.scrape(
             url,
+            formats = ["markdown"],
             only_main_content = True,
             max_age = 86400000
         )
@@ -29,10 +30,17 @@ def scrape_tool(url: str) -> dict:
             "url": url
         }
 
-    data = result.get("data", {})
-    metadata = data.get("metadata", {})
+    if hasattr(result, "model_dump"):
+        data = result.model_dump()
+    elif hasattr(result, "dict"):
+        data = result.dict()
+    elif isinstance(result, dict):
+        data = result.get("data", result)
+    else:
+        data = {}
 
-    raw_content = data.get("markdown", "")
+    metadata = data.get("metadata") or {}
+    raw_content = data.get("markdown") or ""
 
     if len(raw_content) > MAX_CHARS:
         content = raw_content[:MAX_CHARS] + "\n\n [CONTENT TRUNCATED FOR LENGTH]"

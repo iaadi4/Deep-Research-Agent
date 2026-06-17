@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
+from llm import get_llm
 from langgraph.prebuilt import create_react_agent
 from state import AgentState, ResearchItem, ResearchRecord
 from prompts.researcher_prompt import researcher_prompt
@@ -12,7 +12,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 class ResearchAgentOutput(BaseModel):
     items: list[ResearchItem] = Field(description="Discrete pieces of information gathered, one per source/claim")
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", max_retries=5)
+llm = get_llm(temperature=0.3, max_retries=5)
 research_llm = create_react_agent(
     model=llm,
     tools=[scrape_tool, summarize_tool, search_tool],
@@ -42,4 +42,5 @@ def researcher_agent(state: AgentState) -> dict:
         ResearchRecord(agent_id=task.agent_id, task_title=task.title, **item.model_dump())
         for item in items
     ]
+    print(records)
     return {"raw_research_data": records}
