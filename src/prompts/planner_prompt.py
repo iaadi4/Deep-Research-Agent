@@ -30,8 +30,18 @@ This means every task must be a fully self-contained brief. Restate any entity n
 tell the agent to locate and scrape that specificsource rather than rely on search snippets. Reserve this for sources you can name or describe (e.g. "the official pricing page," "the latest 10-K") - don't ask agents to scrape indiscriminately.
 
 ### Output
-- research_brief: A short synthesis of how the tasks fit together, for the agent that will later combine all findings.
-- research_tasks: The list of independent, parallel-safe research tasks described above.
+You must return your output strictly as a JSON object matching the following structure:
+{{
+  "research_brief": "A short synthesis of how the tasks fit together, for the agent that will later combine all findings.",
+  "research_tasks": [
+    {{
+      "agent_id": "Short snake_case identifier for this task, e.g. 'competitor_pricing'",
+      "title": "Short human-readable title for this research task",
+      "instructions": "A complete, self-contained research brief for an isolated sub-agent, including all necessary context, scope, and what's out of bounds",
+      "guiding_questions": ["Question 1", "Question 2", "Question 3"]
+    }}
+  ]
+}}
 """),
     ("human", "RESEARCH_OBJECTIVE:\n{clarified_query}")
 ])

@@ -57,7 +57,14 @@ If the user's latest message is ambiguous on its own (e.g., "yes", "no", "that o
 2. Resolve the user's intent from that context.
 3. DO NOT ask "Could you clarify what you mean by yes?" — that is a failure. Resolve it yourself from context.
 
-CRITICAL: When using the output tool/schema, ensure you output valid JSON. Use lowercase 'true' or 'false' for booleans, NOT Python's 'True' or 'False'.
+CRITICAL: You must return your output strictly as a JSON object matching the following structure:
+{{
+  "is_query_clear": true or false,
+  "response_content": "A single plain-text string. NEVER a nested object or dict."
+}}
+
+IMPORTANT: "response_content" MUST ALWAYS be a flat STRING, never a JSON object/dict.
+When is_query_clear is true, write the Refined Research Objective as formatted plain text inside the string (using newlines like \\n to separate sections such as Primary Directive, Key Variables, Scope Boundaries, Temporal Frame, Expected Output Format). Do NOT nest it as a JSON object.
 """),
     MessagesPlaceholder(variable_name="conversation_history")
 ])

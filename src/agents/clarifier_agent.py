@@ -20,7 +20,7 @@ class ClarifierOutput(BaseModel):
     )
 
 
-clarifier_llm = clarifier_prompt | llm.with_structured_output(ClarifierOutput)
+clarifier_llm = clarifier_prompt | llm.with_structured_output(ClarifierOutput, method="json_mode")
 
 
 def _derive_search_query(user_queries: list) -> str:

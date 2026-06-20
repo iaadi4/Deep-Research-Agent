@@ -9,7 +9,7 @@ class PlannerOutput(BaseModel):
     research_tasks: list[ResearchTasks] = Field(description="2-6 independent research tasks to run in parallel")
 
 llm = get_llm(temperature=0.5)
-planner_llm = planner_prompt | llm.with_structured_output(PlannerOutput)
+planner_llm = planner_prompt | llm.with_structured_output(PlannerOutput, method="json_mode")
 
 def planner_agent(state: AgentState) -> dict:
     """This agent takes input from clarifier agent and decomposes the prompt into subtasks."""
