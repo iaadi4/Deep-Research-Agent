@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic import BaseModel, Field
 import operator
 from langgraph.graph import add_messages
@@ -8,7 +9,9 @@ class ResearchItem(BaseModel):
     source: str = Field(description="source of the information gathered by agent")
     title: str = Field(description="title of the information")
     content: str = Field(description="raw content/body of the information")
-    confidence: str = Field(description="confidence score of the information")
+    confidence: Literal["high", "medium", "low"] = Field(
+        description="confidence in this finding, based on source reliability and how directly it answers the guiding question"
+    )
 
 class ResearchRecord(ResearchItem):
     agent_id: str = Field(description="ID of the task/agent that produced this item")
@@ -35,6 +38,9 @@ class AgentState(TypedDict):
     # Data from multiple Research agent
     task: ResearchTasks
     raw_research_data: Annotated[list[ResearchItem], operator.add]
+
+    # Structured compiled data from sub Research agent by Synthesizer agent
+    compiled_research: str
 
     # Judge agent output
     missing_items: list[str]

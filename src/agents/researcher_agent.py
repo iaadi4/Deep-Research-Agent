@@ -28,7 +28,7 @@ def researcher_agent(state: AgentState) -> dict:
     task = state["task"]
     current_time_str = datetime.datetime.now().strftime("%A, %B %d, %Y")
 
-    brief = researcher_prompt.format(
+    brief = researcher_prompt.format_messages(
         current_date=current_time_str,
         title=task.title,
         instructions=task.instructions,
