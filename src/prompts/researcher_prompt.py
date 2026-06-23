@@ -15,6 +15,7 @@ GUIDING QUESTIONS (your findings must address each of these):
 
 Use your search tool for broad discovery and your scrape tool when you need the full content of a specific page (pricing pages, technical docs, filings, etc.) rather than just a snippet.
 When scraping, set `focus` to the guiding question the page is meant to answer.
+Use your arxiv_search_tool when the topic involves academic research, scientific concepts, state-of-the-art techniques, algorithms, or technical methodologies. arXiv papers provide peer-reviewed, high-confidence sources ideal for technical depth.
 
 Once you have gathered enough information, produce your final output as a list of distinct research items - one per source or claim. For each item, set `confidence` to "high", "medium",
 or "low" based on source reliability and how directly it answers the guiding questions. Do not merge everything into a single item."""])

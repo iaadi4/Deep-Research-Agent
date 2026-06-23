@@ -6,6 +6,7 @@ from prompts.researcher_prompt import researcher_prompt
 from tools.firecrawl_scrapping_tool import scrape_tool
 from tools.summarizer_tool import summarize_tool
 from tools.tavily_search_tool import search_tool
+from tools.arxiv_search_tool import arxiv_search_tool
 import datetime
 from tenacity import retry, stop_after_attempt, wait_exponential
 
@@ -15,7 +16,7 @@ class ResearchAgentOutput(BaseModel):
 llm = get_llm(temperature=0.3, max_retries=5)
 research_llm = create_react_agent(
     model=llm,
-    tools=[scrape_tool, summarize_tool, search_tool],
+    tools=[scrape_tool, summarize_tool, search_tool, arxiv_search_tool],
     response_format=ResearchAgentOutput,
 )
 
