@@ -20,8 +20,8 @@ research_llm = create_react_agent(
 )
 
 @retry(stop=stop_after_attempt(5), wait=wait_exponential(multiplier=2, min=5, max=60))
-def invoke_research_agent(brief: str) -> dict:
-    return research_llm.invoke({"messages": [("human", brief)]})
+def invoke_research_agent(messages: list) -> dict:
+    return research_llm.invoke({"messages": messages})
 
 def researcher_agent(state: AgentState) -> dict:
     """This agent takes a task from the planner and uses tools to gather findings relevant to it."""
@@ -42,5 +42,4 @@ def researcher_agent(state: AgentState) -> dict:
         ResearchRecord(agent_id=task.agent_id, task_title=task.title, **item.model_dump())
         for item in items
     ]
-    print(records)
     return {"raw_research_data": records}

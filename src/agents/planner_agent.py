@@ -19,8 +19,6 @@ def planner_agent(state: AgentState) -> dict:
         "current_date": current_date_str,
         "clarified_query": state["clarified_query"],
     })
-
-    print(result)
     
     return {
         "research_brief": result.research_brief,

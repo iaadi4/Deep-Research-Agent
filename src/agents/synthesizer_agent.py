@@ -1,6 +1,5 @@
-from langchain_core.prompts import ChatPromptTemplate
 from tenacity import retry, stop_after_attempt, wait_exponential
-from prompts import synthesizer_prompt
+from prompts.synthesizer_prompt import synthesizer_prompt
 
 from llm import get_llm
 from state import AgentState, ResearchRecord
@@ -95,8 +94,7 @@ def synthesizer_agent(state: AgentState) -> dict:
     raw_data_formatted = format_raw_data(raw_research_data)
     coverage_note = _coverage_note(state, raw_research_data)
 
-    prompt = ChatPromptTemplate.from_template(synthesizer_prompt)
-    chain = prompt | llm
+    chain = synthesizer_prompt | llm
 
     try:
         compiled = _invoke_synthesizer(
@@ -114,4 +112,5 @@ def synthesizer_agent(state: AgentState) -> dict:
             f"Raw research data is included below unsynthesized:\n\n{raw_data_formatted}"
         )
 
+    print(compiled)
     return {"compiled_research": compiled}
